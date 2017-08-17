@@ -1,0 +1,252 @@
+@charset "utf-8";
+
+//==========================================================
+// Mediaquery
+//==========================================================
+
+// 変数の定義
+// min-width
+$breakpoint-up: (
+  'xs': 'screen and (min-width: 321px)',
+  'sm': 'screen and (min-width: 400px)',
+  'md': 'screen and (min-width: 768px)',
+  'lg': 'screen and (min-width: 1000px)',
+  'xl': 'screen and (min-width: 1200px)',
+) !default;
+
+// max-width
+$breakpoint-down: (
+  'xs': 'screen and (max-width: 320px)',
+  'sm': 'screen and (max-width: 399px)',
+  'md': 'screen and (max-width: 767px)',
+  'lg': 'screen and (max-width: 999px)',
+  'xl': 'screen and (max-width: 1199px)',
+) !default;
+
+// @mixinの定義
+@mixin mq-up($breakpoint: md) {
+  @media #{map-get($breakpoint-up, $breakpoint)} {
+    @content;
+  }
+}
+
+@mixin mq-down($breakpoint: md) {
+  @media #{map-get($breakpoint-down, $breakpoint)} {
+    @content;
+  }
+}
+
+
+//==========================================================
+// Layout
+//==========================================================
+
+
+// fluid:Layout
+//==========================================================
+@mixin fluid( $width: 1000px , $top: 0 , $bottom: 0) {
+  max-width: $width;
+  margin: $top auto $bottom;
+}
+
+
+// position absolute :Layout
+//==========================================================
+@mixin pos-abs($top: initial, $right: initial, $bottom: initial ,$left: initial) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  left: $left;
+  bottom: $bottom;
+}
+
+
+
+
+// float:Layout
+//==========================================================
+
+// float:clearfix
+@mixin clearfix() {
+  $supportIE: false; // IE非対応の場合 false
+
+	@if $supportIE {
+		*zoom: 1;
+	}
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+
+// float:left
+@mixin float-left($width: 50%) {
+  float: left;
+  width: $width;
+}
+
+// float:right
+@mixin float-right($width: 50%) {
+  float: right;
+  width: $width;
+}
+
+
+
+// table-cell:Layout
+//==========================================================
+
+// table-cell
+@mixin table-cell() {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+
+// flexbox:Layout
+//==========================================================
+
+// flex
+@mixin flex() {
+  -js-display: flex; // ie old
+  display:-webkit-box; // old
+  display:-moz-box; // old
+  display:-ms-flexbox; // ie
+  display:-webkit-flex; // new
+  display:flex; // new
+}
+
+// multi-column:Layout
+//==========================================================
+
+// column-count (初期値:3)
+@mixin column-count( $value: 3) {
+  -webkit-column-count: $value;
+  -moz-column-count: $value;
+  column-count: $value;
+}
+
+// column-width (初期値:150px)
+@mixin column-width ( $value: 150px ) {
+  -webkit-column-width: $value;
+  -moz-column-width: $value;
+  column-width: $value;
+}
+
+
+//==========================================================
+// Effect
+//==========================================================
+
+// opacity
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  filter: alpha(opacity=($opacity * 100));
+}
+
+// ease-in-out
+@mixin ease-in-out( $value: 0.2s ) {
+  -webkit-transition: $value ease-in-out;
+  -moz-transition: $value ease-in-out;
+  -o-transition: $value ease-in-out;
+  transition: $value ease-in-out;
+}
+
+
+//==========================================================
+// Decoration
+//==========================================================
+
+// invisible-line:top
+@mixin invisible-line-top($op1: .2, $op2: .3){
+	border-top: 1px solid rgba(0, 0, 0, $op1);
+	box-shadow: (rgba(255, 255, 255, $op2) 0 1px 0 inset);
+}
+
+// invisible-line:bottom
+@mixin invisible-line-bottom($op1: .2, $op2: .3){
+	border-bottom: 1px solid rgba(0, 0, 0, $op1);
+	box-shadow: (rgba(255, 255, 255, $op2)0 1px 0);
+}
+
+// invisible-line:left
+@mixin invisible-line-left($op1: .2, $op2: .3){
+	border-left: 1px solid rgba(0, 0, 0, $op1);
+	box-shadow: (rgba(255, 255, 255, $op2) -1px 0 0);
+}
+
+// invisible-line:right
+@mixin invisible-line-right($op1: .2, $op: .3){
+	border-right: 1px solid rgba(0, 0, 0, $op1);
+	box-shadow: (rgba(255, 255, 255, $op2) -1px 0 0 inset);
+}
+
+
+
+//==========================================================
+// iframe
+//==========================================================
+
+//youtube
+@mixin youtube() {
+  position: relative;
+  width: 100%;
+  padding: 0 0 56.25% 0;
+
+  & iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+  }
+}
+
+
+
+//==========================================================
+// 自動計算
+//==========================================================
+
+// font
+@mixin font-size($size) {
+  font-size: $size;
+  font-size: ($size / 16px) * 1rem;
+}
+
+
+//==========================================================
+// 画像
+//==========================================================
+
+//画像%指定
+@mixin img-fit($width: 100%) {
+  & img {
+    width: $width;
+  }
+}
+
+
+//==========================================================
+// 画像置換
+//==========================================================
+
+//Scott Kellum Method
+@mixin img-replace() {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+//==========================================================
+// その他
+//==========================================================
+@mixin box-sizing($type: border-box) {
+  -webkit-box-sizing: $type;
+  -moz-box-sizing: $type;
+  -o-box-sizing: $type;
+  -ms-box-sizing: $type;
+  box-sizing: $type;
+}
